@@ -1,111 +1,39 @@
+import type { Dispatch, SetStateAction } from "react";
 
-// o interface 
+const tipOptions = [
+  { id: "tip-10", value: 0.1, text: "10%" },
+  { id: "tip-20", value: 0.2, text: "20%" },
+  { id: "tip-50", value: 0.5, text: "50%" },
+];
 
+type TipPercentageFormProps = {
+  setTip: Dispatch<SetStateAction<number>>;
+  tip: number;
+};
 
+export default function TipPercentageForm({
+  setTip,
+  tip,
+}: TipPercentageFormProps) {
+  return (
+    <div>
+      <h3 className="font-black text-2xl">Propina:</h3>
 
-export default function tipPorcentageForm({ 
-    tip{
-
-
-
-    return (
-        <header className="py-5 header">
-            <div className="container-xl">
-                <div className="row justify-content-center justify-content-md-between">
-                    <div className="col-8 col-md-3">
-                        <a href="index.html">
-                            <img className="img-fluid" src="/img/logo.svg" alt="imagen logo" />
-                        </a>
-                    </div>
-                    <nav className="col-md-6 a mt-5 d-flex align-items-start justify-content-end">
-                        <div className="carrito">
-                            <img className="img-fluid" src="/img/carrito.png" alt="imagen carrito" />
-
-                            <div id="carrito" className="bg-white p-3">
-                                {order ? (
-                                    <p className="text-center">El carrito esta vacio</p>
-
-                                ) : (
-                                    <>
-                                        <table className="w-100 table">
-                                            <thead>
-
-                                                <tr>
-                                                    <th>Imagen</th>
-                                                    <th>Nombre</th>
-                                                    <th>Precio</th>
-                                                    <th>Cantidad</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                {tip.map(MenuItem => (
-                                                    <tr key={MenuItem.id}>
-                                                        <td>
-                                                            <img
-                                                                className="img-fluid"
-                                                                src={`/img/${MenuItem.image}.jpg`}
-                                                                alt="imagen MenuItemra"
-                                                            />
-                                                        </td>
-                                                        <td>{MenuItem.name}</td>
-                                                        <td className="fw-bold">
-                                                            {MenuItem.price}
-                                                        </td>
-                                                        <td className="flex align-items-start gap-4">
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-dark"
-                                                                onClick={() => decreaseQuantity(MenuItem.id)}
-                                                            >
-                                                                -
-
-                                                            </button>
-                                                            <span>{MenuItem.quantity}</span>
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-dark"
-                                                                onClick={() => increaseQuantity(MenuItem.id)}
-                                                            >
-                                                                +
-                                                            </button>
-                                                        </td>
-                                                        <td>
-                                                            <button
-                                                                className="btn btn-danger"
-                                                                type="button"
-                                                                onClick={() => removeItem(MenuItem.id)}
-                                                            >
-                                                                X
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-
-                                                ))}
-
-
-                                            </tbody>
-                                        </table>
-                                        <p className="text-end">Total pagar: <span className="fw-bold">${tipTotal}</span></p>
-                                    </>
-                                )}
-                                <button
-                                    className="btn btn-dark w-100 mt-3 p-2"
-                                    onClick={() => cleartip()}
-                                >
-                                    Vaciar Carrito
-                                </button>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </header>
-    )
+      <form>
+        {tipOptions.map((tipOption) => (
+          <div key={tipOption.id} className="flex gap-2">
+            <input
+              id={tipOption.id}
+              type="radio"
+              name="tip"
+              value={tipOption.value}
+              onChange={(e) => setTip(+e.target.value)}
+              checked={tipOption.value === tip}
+            />
+            <label htmlFor={tipOption.id}>{tipOption.text}</label>
+          </div>
+        ))}
+      </form>
+    </div>
+  );
 }
-
-function removeItem(id: any): void {
-    throw new Error("Function not implemented.");
-}
-

@@ -1,64 +1,46 @@
-
-import './App.css'
-import { menuItems } from './data/db';
-import { useOrder } from './hooks/useOrder';
-
+import MenuItem from "./components/MenuItem";
+import OrderContents from "./components/OrderContents";
+import OrderTotals from "./components/OrderTotals";
+import TipPercentageForm from "./components/TipPercentageForm";
+import { menuItems } from "./data/db";
+import { useOrder } from "./hooks/useOrder";
 
 function App() {
-    const {
-       tip,
-    order,
-    cleartip,
-    addItem,
-    removeItem,
-               tipTotal } = useOrder();
+  const { order, tip, setTip, addItem, removeItem, placeOrder } = useOrder();
 
+  return (
+    <>
+      <header className="py-5">
+        <h1 className="text-center text-4xl font-black">
+          Calculadora de Propinas y Consumo
+        </h1>
+      </header>
 
+      <main className="max-w-7xl mx-auto py-20 grid md:grid-cols-2">
+        <div className="p-5">
+          <h2 className="text-4xl font-black">Menú</h2>
 
+          <div className="space-y-3 mt-10">
+            {menuItems.map((item) => (
+              <MenuItem key={item.id} item={item} addItem={addItem} />
+            ))}
+          </div>
+        </div>
 
-
-    return (
-        <>
-            <OrderTotals
-                 tip={tip}
-    order={order}
-    cleartip={cleartip}
-    tipTotal={tipTotal}
-    addItem={addItem}
-    removeItem={removeItem}
-            />
-
-
-
-
-            <main className="container-xl mt-5">
-                <h2 className="text-center">Nuestra Colección</h2>
-
-                <div className="row mt-5">
-                    {menuItems.map((MenuItem) => (
-
-                        <MenuItem
-                            key={MenuItem.id}
-                            MenuItem={MenuItem}
-                            addItem={addItem}
-
-
-                        />
-
-
-
-                    ))}
-
-                </div>
-            </main>
-
-            <footer className="bg-dark mt-5 py-5">
-                <div className="container-xl">
-                    <p className="text-white text-center fs-4 mt-4 m-md-0">GuitarLA - Todos los derechos Reservados</p>
-                </div>
-            </footer>
-        </>
-    )
+        <div className="border border-dashed p-5 rounded-lg space-y-10">
+          {order.length > 0 ? (
+            <>
+              <OrderContents order={order} removeItem={removeItem} />
+              <TipPercentageForm setTip={setTip} tip={tip} />
+              <OrderTotals order={order} tip={tip} placeOrder={placeOrder} />
+            </>
+          ) : (
+            <p className="text-center">La orden esta vacia</p>
+          )}
+        </div>
+      </main>
+    </>
+  );
 }
 
-export default App
+export default App;

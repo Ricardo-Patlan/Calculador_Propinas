@@ -1,4 +1,4 @@
-import type { MenuItem } from "primeng/api";
+import type { MenuItem } from "../types";
 
 export const menuItems: MenuItem[] = [
   {
